@@ -1,4 +1,5 @@
 
+|header image|
 
 |MIT license|
 
@@ -261,5 +262,6 @@ TODO
 * Add support for the `lastquery` request parameter
 * Add option to have all objects return as properly formatted nested dictionaries
 
+.. |header image| image:: https://s3.amazonaws.com/random-images-for-github/donbest.png
 .. |MIT license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
