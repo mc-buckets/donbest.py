@@ -53,11 +53,24 @@ Returns a list of the upcoming scheduled competitions and propositions for the n
     event.neutral
     event.game_number
     event.group
-    event.participants
-    event.league
-    event.location
+    event.group.id
+    event.group.name
+    event.group.type
+    event.group.type_id
     event.live
 
+    ## See Team section to view what attributes are 
+    ## available on the items returned in the list of
+    ## participants
+    event.participants
+
+    ## See League section for what attributes
+    ## are available on League objects
+    event.league
+
+    ## See Location section for what attributes
+    ## may be available on Location objects
+    event.location
 
 Full schedule:
 
@@ -82,7 +95,7 @@ Live scores:
 
     >>> scores = db.score()
     >>> score = scores[0]
-    <Score id=818854, league_id=12, away_rot=8205, home_rot=8206, away_score=6, home_score=7, description=FINAL, time=2018-05-22 14:18:26+00:00, period=FINAL, period_id=0, away_score_ext=None, home_score_ext=None, period_summary=[{'name': 'Set 1', 'description': 'END-', 'time': datetime.datetime(2018, 5, 22, 12, 36, 26, tzinfo=<UTC>), 'period_id': '331', 'scores': [{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '2'}]}, {'name': 'Set 2', 'description': 'END-', 'time': datetime.datetime(2018, 5, 22, 13, 27, 28, tzinfo=<UTC>), 'period_id': '332', 'scores': [{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '7'}]}, {'name': 'Set 3', 'description': 'END-', 'time': datetime.datetime(2018, 5, 22, 14, 18, 26, tzinfo=<UTC>), 'period_id': '333', 'scores': [{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '7'}]}]>
+    <Score id=818854, league_id=12, away_rot=8205, home_rot=8206, away_score=6, home_score=7, description=FINAL, time=2018-05-22 14:18:26+00:00, period=FINAL, period_id=0, away_score_ext=None, home_score_ext=None, period_summary=[<Period name=Set 1, description=END-, time=2018-05-22 12:36:26+00:00, period_id=331, scores=[{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '2'}]>, <Period name=Set 2, description=END-, time=2018-05-22 13:27:28+00:00, period_id=332, scores=[{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '7'}]>, <Period name=Set 3, description=END-, time=2018-05-22 14:18:26+00:00, period_id=333, scores=[{'rot': '8205', 'value': '6'}, {'rot': '8206', 'value': '7'}]>]>
 
     # Available Score attributes:
     ## The Score id is the id of the event it relates to...they are the same value
@@ -98,7 +111,15 @@ Live scores:
     score.period_id
     score.away_score_ext
     score.home_score_ext
-    score.period_summary
+
+    for period in score.period_summary:
+        period.name
+        period.description
+        period.time_changed
+        period.id
+        for score in period.scores:
+            score["rot"]
+            score["value"]
 
 Lines
 ~~~~
@@ -111,7 +132,7 @@ Opening Odds (NBA):
 
     >>> nba_lines = db.open(league_id=3)
     >>> line = nba_lines[0]
-    <Line event=<Event id=817069, season=None, date=2018-05-23 01:05:00+00:00, opentime=None, name=None, event_type=None, event_state=None, time_changed=None, neutral=None, game_number=None, group=None, participants=None, league=None, location=None, live=None>, away_rot=505, home_rot=506, time=2018-05-21 02:20:48+00:00, period_id=1, period=FG, type=open, sportsbook=347, ps={'away_spread': Decimal('9.00'), 'away_price': -110, 'home_spread': Decimal('-9.00'), 'home_price': -110}, money={'away_money': 350, 'home_money': -450, 'draw_money': 0}, total={'total': Decimal('224.00'), 'over_price': -110, 'under_price': -110}, team_total=None, display={'away': '224', 'home': '-9'}, no_line=false>
+    <Line event=<Event id=817069, season=None, date=2018-05-23 01:05:00+00:00, opentime=None, name=None, event_type=None, event_state=None, time_changed=None, neutral=None, game_number=None, group=None, participants=None, league=None, location=None, live=None>, away_rot=505, home_rot=506, time=2018-05-22 21:11:47+00:00, period_id=1, period=FG, type=previous, sportsbook=347, ps=<PointSpread away_spread=8.00, home_spread=-8.00, away_price=-110, home_price=-110>, money=<MoneyLine away_money=330, home_money=-430, draw_money=0>, total=<Total total=226.50, over_price=-110, under_price=-110>, team_total=<TeamTotal away_total=109.00, away_over_price=-110, away_under_price=-110, home_total=117.50, home_over_price=-110, home_under_price=-110>, display_away=226%BD, display_home=-8%BD>
 
     # Available Line attributes:
     line.event
@@ -122,11 +143,28 @@ Opening Odds (NBA):
     line.period
     line.type
     line.sportsbook
+    line.display_home
+    line.display_away
     line.ps
+    line.ps.away_spread
+    line.ps.home_spread
+    line.ps.away_price
+    line.ps.home_price
     line.money
+    line.money.away_money
+    line.money.home_money
+    line.money.draw_money
     line.total
+    line.total.total
+    line.total.over_price
+    line.total.under_price
     line.team_total
-    line.display
+    line.team_total.away_total
+    line.team_total.away_over_price
+    line.team_total.away_under_price
+    line.team_total.home_total
+    line.team_total.home_over_price
+    line.team_total.home_under_price
 
 Live Odds and Closing Odds (NBA):
 
@@ -229,6 +267,11 @@ Returns a list of Stadium and Arenas for all competitions in the schedule feed. 
     location.seating_capacity
     location.elevation
     location.city
+    location.city.id
+    location.city.name
+    location.city.country
+    location.city.postalCode
+    location.city.state
 
 Miscellaneous
 ~~~~~~~~~~~~~

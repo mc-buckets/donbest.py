@@ -192,7 +192,6 @@ class Sport(BaseDonbestResponse):
         self._setattr_from_attributes(self.node)
         self._setattr_from_single_children(self.node)
 
-
 class League(BaseDonbestResponse):
     """Returns a League"""
     def __init__(self, node, donbest):
@@ -307,6 +306,46 @@ class Sportsbook(BaseDonbestResponse):
         self._setattr_from_single_children(self.node)
         self._setattr_from_dupe_children(self.node, take_first=True)
 
+class PointSpread(BaseDonbestResponse):
+    """Returns a PointSpread"""
+    def __init__(self, node, donbest):
+        super().__init__(node=node, donbest=donbest)
+        self.away_spread = None
+        self.home_spread = None
+        self.away_price = None
+        self.home_price = None
+        self._setattr_from_attributes(self.node)
+
+class MoneyLine(BaseDonbestResponse):
+    """Returns a MoneyLine"""
+    def __init__(self, node, donbest):
+        super().__init__(node=node, donbest=donbest)
+        self.away_money = None
+        self.home_money = None
+        self.draw_money = None
+        self._setattr_from_attributes(self.node)
+
+class Total(BaseDonbestResponse):
+    """Returns a Total"""
+    def __init__(self, node, donbest):
+        super().__init__(node=node, donbest=donbest)
+        self.total = None
+        self.over_price = None
+        self.under_price = None
+        self._setattr_from_attributes(self.node)
+
+class TeamTotal(BaseDonbestResponse):
+    """Returns a TeamTotal"""
+    def __init__(self, node, donbest):
+        super().__init__(node=node, donbest=donbest)
+        self.away_total = None
+        self.away_over_price = None
+        self.away_under_price = None
+        self.home_total = None
+        self.home_over_price = None
+        self.home_under_price = None
+        self._setattr_from_attributes(self.node)
+
 class Line(BaseDonbestResponse):
     """Returns a Line"""
     def __init__(self, node, donbest):
@@ -323,9 +362,9 @@ class Line(BaseDonbestResponse):
         self.money = None
         self.total = None
         self.team_total = None
-        self.display = None
+        self.display_away = None
+        self.display_home = None
         self._setattr_from_attributes(self.node)
-        self._setattr_from_single_children(self.node)
 
     @classmethod
     def from_xml_collection(cls, node, event, donbest):
@@ -335,6 +374,24 @@ class Line(BaseDonbestResponse):
         """
         l = cls(node=node, donbest=donbest)
         l.event = event
+        ps = l.node.find(".//ps")
+        money = l.node.find(".//money")
+        total = l.node.find(".//total")
+        team_total = l.node.find(".//team_total")
+        display = l.node.find(".//display")
+
+        if ps is not None:
+            l.ps = PointSpread(ps, donbest=donbest)
+        if money is not None:
+            l.money = MoneyLine(money, donbest=donbest)
+        if total is not None:
+            l.total = Total(total, donbest=donbest)
+        if team_total is not None:
+            l.team_total = TeamTotal(team_total, donbest=donbest)
+        if display is not None:
+        	l.display_home = display.attrib["home"]
+        	l.display_away = display.attrib["away"]
+
         return l
 
 class Group(BaseDonbestResponse):
@@ -429,6 +486,31 @@ class Event(BaseDonbestResponse):
     def get_score(self):
         pass
 
+class Period(BaseDonbestResponse):
+    """Returns a Period"""
+    def __init__(self, node, donbest):
+        super().__init__(node=node, donbest=donbest)
+        self.name = None
+        self.description = None
+        self.time = None
+        self.period_id = None
+        self.scores = None
+        self._setattr_from_attributes(self.node)
+
+    @classmethod
+    def from_period_summary(cls, node, donbest):
+        """Creates a new Period instance from the
+        period XML nodes returned in the donbest.score()
+        API response.
+        """
+        p = cls(node, donbest=donbest)
+        scores = p.node.findall(".//score")
+        if scores is not None:
+            score_list = [score.attrib for score in scores]
+        p.scores = score_list
+
+        return p
+
 class Score(BaseDonbestResponse):
     """Returns a Score"""
     def __init__(self, node, donbest):
@@ -460,16 +542,7 @@ class Score(BaseDonbestResponse):
         if periods is not None:
             p_list = []
             for period in periods:
-                p = {
-                    "name": period.attrib["name"],
-                    "description": period.attrib["description"],
-                    "time": s.cast_value("time", period.attrib["time"]),
-                    "period_id": period.attrib["period_id"],
-                    "scores": []
-                }
-                for score in period.findall(".//score"):
-                    p["scores"].append({"rot": score.attrib["rot"],
-                                        "value": score.attrib["value"]})
+                p = Period.from_period_summary(period, donbest=donbest)
                 p_list.append(p)
         s.period_summary = p_list
         return s

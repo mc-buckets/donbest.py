@@ -102,11 +102,12 @@ def line_keys():
         'period': str,
         'type': str,
         'sportsbook': str,
-        'ps': dict,
-        'money': dict,
-        'total': dict,
-        'team_total': dict,
-        'display': dict
+        'ps': donbest.PointSpread,
+        'money': donbest.MoneyLine,
+        'total': donbest.Total,
+        'team_total': donbest.TeamTotal,
+        'display_away': str,
+        'display_home': str
     }
 
 @fixture
