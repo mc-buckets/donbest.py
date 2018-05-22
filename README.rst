@@ -253,7 +253,7 @@ For more information on all methods and usage, please read the `Don Best Sports 
 License |MIT License|
 -----------------
 
-MIT License. See `LICENSE <license>`__ for details.
+MIT License. See `LICENSE <LICENSE>`__ for details.
 
 TODO
 -----------------
