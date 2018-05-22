@@ -1,7 +1,7 @@
 
 |header image|
 
-|MIT license|
+|build badge| |MIT license|
 
 Donbest.py is an easy-to-use Python wrapper for the `Don Best Sports Data API. <http://xml.donbest.com/v2/home>`_
 
@@ -154,6 +154,8 @@ Returns a list of Teams covered by Don Best Sports */v2/team*
     team.full_name
     team.information
     team.league
+    team.rotation
+    team.side
 
 Leagues
 ~~~~~~~~~~~~~
@@ -265,3 +267,5 @@ TODO
 .. |header image| image:: https://s3.amazonaws.com/random-images-for-github/donbest.png
 .. |MIT license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
+.. |build badge|  image:: https://travis-ci.com/mamcmanus/donbest.svg?token=43sVQ9sXnXzhgBns7vWu&branch=master
+   :target: https://travis-ci.com/mamcmanus/donbest
