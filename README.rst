@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 |MIT license|
 
@@ -102,7 +102,7 @@ Live scores:
 Lines
 ~~~~
 
-Returns a list of opening odds, live odds, and closing odds for competitions and propositions by league. `League id is a required parameter for all of the Lines endpoints`
+Returns a list of opening odds, live odds, and closing odds for competitions and propositions by league. *League id is a required parameter for all of the Lines endpoints*
 
 Opening Odds (NBA):
 
@@ -138,7 +138,7 @@ Live Odds and Closing Odds (NBA):
 Teams
 ~~~~~~~~~~~~~
 
-Returns a list of Teams covered by Don Best Sports `/v2/team`
+Returns a list of Teams covered by Don Best Sports */v2/team*
 
 .. code:: pycon
 
@@ -157,7 +157,7 @@ Returns a list of Teams covered by Don Best Sports `/v2/team`
 Leagues
 ~~~~~~~~~~~~~
 
-Returns a list of Leagues covered by Don Best Sports `/v2/league`
+Returns a list of Leagues covered by Don Best Sports */v2/league*
 
 .. code:: pycon
 
@@ -175,7 +175,7 @@ Returns a list of Leagues covered by Don Best Sports `/v2/league`
 Sportsbooks
 ~~~~~~~~~~~~~
 
-Returns a list of Sports Books covered by Don Best Sports `/v2/sportsbook`
+Returns a list of Sports Books covered by Don Best Sports */v2/sportsbook*
 
 .. code:: pycon
 
@@ -191,7 +191,7 @@ Returns a list of Sports Books covered by Don Best Sports `/v2/sportsbook`
 Sports
 ~~~~~~~~~~~~~
 
-Returns a list of Sports covered by Don Best Sports `/v2/sport`
+Returns a list of Sports covered by Don Best Sports */v2/sport*
 
 .. code:: pycon
 
@@ -208,7 +208,7 @@ Returns a list of Sports covered by Don Best Sports `/v2/sport`
 Locations
 ~~~~~~~~~~~~~
 
-Returns a list of Stadium and Arenas for all competitions in the schedule feed. `/v2/location`
+Returns a list of Stadium and Arenas for all competitions in the schedule feed. */v2/location*
 
 .. code:: pycon
 
@@ -245,16 +245,15 @@ In most cases, the values of the object attributes are returned as the type you 
     the IDs can change over time, so relying on the current format may cause you problems in the future
 
 Donbest.py maps 1-1 to the Don Best Sports API (e.g., db.one.two.three() will
-send a request to “http://xml.donbest.com/v2/one/two/three”). However, the library does not currently support the `event_state` or `market_list` endpoint. It also does not support the Don Best Streaming Message API since that requires your IP to be whitelisted, which makes it harder to test.
+send a request to “http://xml.donbest.com/v2/one/two/three”). However, the library does not currently support the *event_state* or *market_list* endpoint. It also does not support the Don Best Streaming Message API since that requires your IP to be whitelisted, which makes it harder to test.
 
 For more information on all methods and usage, please read the `Don Best Sports API documentation. <http://members.donbest.com/integration/index.html>`_
 
-.. _license-licenselicense-imagelicense-url:
 
-License |License|
+License |MIT License|
 -----------------
 
-MIT License. See `LICENSE <license-url>`__ for details.
+MIT License. See `LICENSE <license>`__ for details.
 
 TODO
 -----------------
@@ -262,5 +261,5 @@ TODO
 * Add support for the `lastquery` request parameter
 * Add option to have all objects return as properly formatted nested dictionaries
 
-.. |MIT license| image:: https://img.shields.io/badge/License-MIT-blue.svg
-   :target: https://lbesson.mit-license.org/
+.. |MIT license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://opensource.org/licenses/MIT
