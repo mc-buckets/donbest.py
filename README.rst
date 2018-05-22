@@ -1,4 +1,4 @@
-Donbest.py is an easy-to-use and fully-functional Python wrapper for the `Don Best Sports Data API. <http://xml.donbest.com/v2/home>`_
+Donbest.py is an easy-to-use Python wrapper for the `Don Best Sports Data API. <http://xml.donbest.com/v2/home>`_
 
 Installation
 ------------
@@ -7,7 +7,7 @@ Donbest.py is available for download through the Python Package Index (PyPi). Yo
 
 .. code:: bash
 
-    pip install "donbest"
+    pip install donbest
 
 Usage
 -----
@@ -131,10 +131,8 @@ Live Odds and Closing Odds (NBA):
     >>> db.close(league_id=3)
 
 
-Lookup feeds
-~~~~
-
-Teams:
+Teams
+~~~~~~~~~~~~~
 
 Returns a list of Teams covered by Don Best Sports `/v2/team`
 
@@ -152,7 +150,8 @@ Returns a list of Teams covered by Don Best Sports `/v2/team`
     team.information
     team.league
 
-Leagues:
+Leagues
+~~~~~~~~~~~~~
 
 Returns a list of Leagues covered by Don Best Sports `/v2/league`
 
@@ -169,7 +168,8 @@ Returns a list of Leagues covered by Don Best Sports `/v2/league`
     league.information
     league.sport
 
-Sportsbooks:
+Sportsbooks
+~~~~~~~~~~~~~
 
 Returns a list of Sports Books covered by Don Best Sports `/v2/sportsbook`
 
@@ -184,7 +184,8 @@ Returns a list of Sports Books covered by Don Best Sports `/v2/sportsbook`
     sportsbook.name
     sportsbook.abbreviation
 
-Sports:
+Sports
+~~~~~~~~~~~~~
 
 Returns a list of Sports covered by Don Best Sports `/v2/sport`
 
@@ -200,7 +201,8 @@ Returns a list of Sports covered by Don Best Sports `/v2/sport`
     sport.abbreviation
     sport.information
 
-Locations:
+Locations
+~~~~~~~~~~~~~
 
 Returns a list of Stadium and Arenas for all competitions in the schedule feed. `/v2/location`
 
@@ -232,7 +234,7 @@ By default, donbest.py will return parsed python objects. If you’d like the ra
     >>> response
     b'<?xml version="1.0" encoding="utf-8"?>\n<don_best_sports><id>schedule_inplay</id><updated>2018-05-22T13:16:32+0</updated><schedule><sport id="1" name="Football">....
 
-In most cases, the values of the object attributes are returned as the type you would expect (e.g. dates are returned as native python datetime objects). The main scenario in which this differs is for the unique 'id' of each object. All unique ids are returned as strings. Here is the quote from the Don Best APO documentation that suggests this approach.
+In most cases, the values of the object attributes are returned as the type you would expect (e.g. dates are returned as native python datetime objects). The main scenario in which this differs is for the unique 'id' of each object. All unique ids are returned as strings. Here is the quote from the Don Best API documentation that suggests this approach.
 
     Note: The Don Best Sports API exposes identifiers for uniquely identifiable objects such as Events, Teams and Sports
     Books. These IDs should always be treated as opaque strings, rather than integers of any specific type. The format of
