@@ -8,7 +8,6 @@ from donbest import (Donbest, Event, Sport, League, Team, Location, City,
                      ConnectionClosedError, Score)
 from pytest import fixture, raises, mark
 from datetime import datetime
-import vcr
 import time
 import random
 
@@ -162,7 +161,6 @@ def test_bad_endpoint(don):
         bad_endpoint = don.scores()
 
 
-@vcr.use_cassette('vcr_cassettes/schedules.yml', filter_query_parameters=['token'], record_mode='new_episodes')
 @mark.parametrize("endpoint", [
     ("schedule"),
     ("current_schedule"),
@@ -189,7 +187,6 @@ def test_schedules(don, random_test_ids, event_keys, endpoint):
         validate_resource(resource)
 
 
-@vcr.use_cassette('vcr_cassettes/lookups.yml', filter_query_parameters=['token'], record_mode='new_episodes')
 @mark.parametrize("endpoint,class_type,keys", [
     ("location", Location, location_keys),
     ("sport", Sport, sport_and_league_keys),
@@ -218,7 +215,6 @@ def test_lookup_feeds(don, random_test_ids, endpoint, class_type, keys):
         validate_resource(resource)
 
 
-@vcr.use_cassette('vcr_cassettes/lines.yml', filter_query_parameters=['token'], record_mode='new_episodes')
 @mark.parametrize("endpoint", [
     ("odds"),
     ("open"),
