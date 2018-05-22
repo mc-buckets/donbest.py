@@ -1,3 +1,7 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+|MIT license|
+
 Donbest.py is an easy-to-use Python wrapper for the `Don Best Sports Data API. <http://xml.donbest.com/v2/home>`_
 
 Installation
@@ -258,3 +262,5 @@ TODO
 * Add support for the `lastquery` request parameter
 * Add option to have all objects return as properly formatted nested dictionaries
 
+.. |MIT license| image:: https://img.shields.io/badge/License-MIT-blue.svg
+   :target: https://lbesson.mit-license.org/
