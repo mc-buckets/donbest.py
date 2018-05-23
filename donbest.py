@@ -1,13 +1,15 @@
 # donbest.py
 # -*- coding: utf-8 -*-
 
+# built-ins
 import os
-import requests
+from datetime import datetime
 from io import BytesIO
-import maya
 import xml.etree.ElementTree as etree
 from collections import Counter
 from decimal import Decimal
+# 3rd party dependencies
+import requests
 
 
 class APITokenMissingError(Exception):
@@ -54,6 +56,7 @@ class BaseDonbestResponse(object):
                       "away_total", "home_total"
                       ]
     BOOLEAN_FIELDS = ["time_changed", "neutral", "live"]
+    DATE_FORMATS = ["%Y-%m-%dT%H:%M:%S+0", "%Y-%m-%dT%H:%M:%S+0000"]
 
     def __init__(self, node, donbest):
         super().__init__()
@@ -74,7 +77,11 @@ class BaseDonbestResponse(object):
             v = None
         else:
             if key in BaseDonbestResponse.DATE_FIELDS:
-                v = maya.parse(value).datetime()
+                for fmat in BaseDonbestResponse.DATE_FORMATS:
+                    try:
+                        v = datetime.strptime(value, fmat)
+                    except ValueError as e:
+                        pass
             elif key in BaseDonbestResponse.INT_FIELDS:
                 v = int(value)
             elif key in BaseDonbestResponse.DECIMAL_FIELDS:
