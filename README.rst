@@ -312,5 +312,5 @@ TODO
    :target: https://opensource.org/licenses/MIT
 .. |build badge|  image:: https://travis-ci.com/mamcmanus/donbest.svg?token=43sVQ9sXnXzhgBns7vWu&branch=master
    :target: https://travis-ci.com/mamcmanus/donbest
-.. |pypi badge|  image:: https://img.shields.io/pypi/v/donbest.svg :alt: PyPI :target: https://pypi.org/project/donbest/
-
+.. |pypi badge|  image:: https://img.shields.io/pypi/v/donbest.svg 
+   :target: https://pypi.org/project/donbest/
