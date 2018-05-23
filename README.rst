@@ -1,7 +1,7 @@
 
 |header image|
 
-|build badge| |MIT license|
+|build badge| |pypi badge| |MIT license|
 
 Donbest.py is an easy-to-use Python wrapper for the `Don Best Sports Data API. <http://xml.donbest.com/v2/home>`_
 
@@ -312,3 +312,5 @@ TODO
    :target: https://opensource.org/licenses/MIT
 .. |build badge|  image:: https://travis-ci.com/mamcmanus/donbest.svg?token=43sVQ9sXnXzhgBns7vWu&branch=master
    :target: https://travis-ci.com/mamcmanus/donbest
+.. |pypi badge|  image:: https://img.shields.io/pypi/v/donbest.svg :alt: PyPI :target: https://pypi.org/project/donbest/
+
