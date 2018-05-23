@@ -102,6 +102,7 @@ def line_keys():
         'period': str,
         'type': str,
         'sportsbook': str,
+        'no_line': bool,
         'ps': donbest.PointSpread,
         'money': donbest.MoneyLine,
         'total': donbest.Total,
@@ -158,8 +159,8 @@ def test_bad_endpoint(donbest_client):
     with raises(donbest.EndpointNotSupportedError):
         bad_endpoint = donbest_client.scores()
 
-def test_missing_params(donbest_client):
-    with raises(donbest.MissingParametersError):
+def test_invalid_params(donbest_client):
+    with raises(donbest.InvalidParametersError):
         bad_endpoint = donbest_client.odds()
 
 @mark.parametrize("endpoint", [

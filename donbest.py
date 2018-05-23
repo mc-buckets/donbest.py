@@ -24,7 +24,7 @@ class MissingEndpointError(Exception):
     pass
 
 
-class MissingParametersError(Exception):
+class InvalidParametersError(Exception):
     pass
 
 
@@ -55,7 +55,7 @@ class BaseDonbestResponse(object):
     DECIMAL_FIELDS = ["away_spread", "home_spread", "total",
                       "away_total", "home_total"
                       ]
-    BOOLEAN_FIELDS = ["time_changed", "neutral", "live"]
+    BOOLEAN_FIELDS = ["time_changed", "neutral", "live", "no_line"]
     DATE_FORMATS = ["%Y-%m-%dT%H:%M:%S+0", "%Y-%m-%dT%H:%M:%S+0000"]
 
     def __init__(self, node, donbest):
@@ -371,6 +371,7 @@ class Line(BaseDonbestResponse):
         self.team_total = None
         self.display_away = None
         self.display_home = None
+        self.no_line = None
         self._setattr_from_attributes(self.node)
 
     @classmethod
@@ -396,8 +397,8 @@ class Line(BaseDonbestResponse):
         if team_total is not None:
             l.team_total = TeamTotal(team_total, donbest=donbest)
         if display is not None:
-        	l.display_home = display.attrib["home"]
-        	l.display_away = display.attrib["away"]
+            l.display_home = display.attrib["home"]
+            l.display_away = display.attrib["away"]
 
         return l
 
@@ -485,13 +486,25 @@ class Event(BaseDonbestResponse):
 
         return e
 
-    def get_lines(self):
-        league_id = self.league_id
+    def get_live_odds(self):
+        league_id = self.league.id
         event_id = self.id
         return self._donbest.odds(league_id=league_id, event_id=event_id)
 
+    
+    def get_opening_odds(self):
+        league_id = self.league.id
+        event_id = self.id
+        return self._donbest.open(league_id=league_id, event_id=event_id)
+
+    def get_closing_odds(self):
+        league_id = self.league.id
+        event_id = self.id
+        return self._donbest.close(league_id=league_id, event_id=event_id)
+
     def get_score(self):
-        pass
+        event_id = self.id
+        return self._donbest.score(event_id=event_id)
 
 class Period(BaseDonbestResponse):
     """Returns a Period"""
@@ -558,7 +571,7 @@ class Donbest(object):
     """"Main object that interacts with the Donbest API.
     Handles request and response routing and manages
     the HTTP session via the requests library.
-   	"""
+    """
     BASE_URL = 'http://xml.donbest.com/v2/'
 
     ENDPOINTS = ["schedule", "odds", "current_schedule",
@@ -625,13 +638,15 @@ class Donbest(object):
                     request_contains_id = True
 
             if self.endpoint in ["odds", "open", "close"] and not request_contains_id:
-            	raise MissingParametersError(
-            		"Don Best can only return odds per league."
-            		"Please include a league id in your request."
-            		"For example, league_id=3 for NBA odds."
-            		)
+                raise InvalidParametersError(
+                    "Don Best can only return odds per league."
+                    "Please include a league id in your request."
+                    "For example, league_id=3 for NBA odds."
+                    )
 
-            # TODO: add support for 'last timestamp' param
+            if self.endpoint in ["odds", "open", "close", "event_state"] and "lastquery" in kwargs.keys():
+                self._session.params["lastquery"] = kwargs["lastquery"]
+
             # attempt to make the request
             try:
                 r = self._session.get(url)
@@ -700,12 +715,8 @@ class Donbest(object):
                             line = Line.from_xml_collection(
                                 node=l, event=event, donbest=self)
                             lines.append(line)
-                    if len(lines) == 0:
-                        raise EmptyResponseError(
-                            "The response from the API came back empty."
-                        )
-                    else:
-                        return lines
+
+                    return lines
 
                 # Tracks changes to an event including time/date change,
                 # rain delay as well as start, final and halftime.
@@ -758,8 +769,8 @@ class Donbest(object):
                     if 'id' in kwargs:
                         league = League(node.find(".//league"), donbest=self)
                         team = Team.from_xml_collection(
-                        	node.find(".//team"), league=league,
-                        	donbest=self)
+                            node.find(".//team"), league=league,
+                            donbest=self)
                         return team
                     else:
                         for s in node.findall(".//sport"):

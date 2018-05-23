@@ -17,8 +17,7 @@ Donbest.py is available for download through the Python Package Index (PyPi). Yo
 Usage
 -----
 
-
-To get started, you're going to need to get your Don Best API token from the `token generator <http://xml.donbest.com/v2/token>`_ on the Don Best website. Once you've got that, you're ready to go. In order to be able to generate a token you need to have an account with Don Best. You can get an account by contacting them. 
+To get started, you're going to need to get your Don Best API token from the `token generator <http://xml.donbest.com/v2/token>`_ on the Don Best website. Once you've got that, you're ready to go. In order to be able to generate a token you need to have an account with Don Best. You can get an account by contacting `Don Best <http://www.donbestcorp.com/xml-odds-feed/>`_. 
 
 .. code:: pycon
 
@@ -27,8 +26,20 @@ To get started, you're going to need to get your Don Best API token from the `to
 
 Once you've done this, you can now use the ``db`` object to make calls to the Don Best API. Here are some examples:
 
+Get Odds for Upcoming NBA games
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: pycon
+
+    >>> events = don.schedule_inplay()
+    >>> nba_events = [event for event in events if event.league.name == "NBA"]
+    >>> for event in nba_events:
+    >>>        print(event.get_live_odds())
+    [<Line event=<Event id=817071, season=None, date=2018-05-25 01:05:00, opentime=None, name=None, event_type=None, event_state=None, time_changed=None, neutral=None, game_number=None, group=None, participants=None, league=None, location=None, live=None>, away_rot=507, home_rot=508, time=2018-05-23 15:20:21, period_id=1, period=FG, type=previous, sportsbook=347, ps=<PointSpread away_spread=0.00, home_spread=0.00, away_price=-110, home_price=-110>, money=<MoneyLine away_money=-110, home_money=-110, draw_money=0>, total=<Total total=220.00, over_price=-110, under_price=-110>, team_total=<TeamTotal away_total=109.50, away_over_price=-115, away_under_price=-105, home_total=110.00, home_over_price=-105, home_under_price=-115>, display_away=-1, display_home=219%BD, no_line=None>,
+    ....]
+
 Event Schedule
-~~~~~~
+~~~~~~~~~~~~~~
 
 In-play schedule:
 
@@ -72,6 +83,13 @@ Returns a list of the upcoming scheduled competitions and propositions for the n
     ## may be available on Location objects
     event.location
 
+    # Available methods:
+    event.get_live_odds()
+    event.get_opening_odds()
+    event.get_closing_odds()
+    event.get_score()
+
+
 Full schedule:
 
 Either of the commands below return the full schedule of upcoming events including competitions and propositions months in the future.
@@ -85,7 +103,7 @@ Either of the commands below return the full schedule of upcoming events includi
     ........................]
 
 Scores
-~~~~~
+~~~~~~
 
 Returns a list containing the state of the live competition, current scores and period summary. Don Best ensures that their period scores are correct without using 3rd party providers which means that the scores are live and accurate.
 
@@ -122,7 +140,7 @@ Live scores:
             score["value"]
 
 Lines
-~~~~
+~~~~~
 
 Returns a list of opening odds, live odds, and closing odds for competitions and propositions by league. *League id is a required parameter for all of the Lines endpoints*
 
@@ -143,6 +161,7 @@ Opening Odds (NBA):
     line.period
     line.type
     line.sportsbook
+    line.no_line
     line.display_home
     line.display_away
     line.ps
@@ -172,7 +191,6 @@ Live Odds and Closing Odds (NBA):
 
     >>> db.odds(league_id=3)
     >>> db.close(league_id=3)
-
 
 Teams
 ~~~~~~~~~~~~~
@@ -297,14 +315,14 @@ For more information on all methods and usage, please read the `Don Best Sports 
 
 
 License |MIT License|
------------------
+----------------------
 
 MIT License. See `LICENSE <LICENSE>`__ for details.
 
 TODO
 -----------------
 * Add support for the `/v2/event_state/` endpoint
-* Add support for the `lastquery` request parameter
+* Add support for the Streaming API
 * Add option to have all objects return as properly formatted nested dictionaries
 
 .. |header image| image:: https://s3.amazonaws.com/random-images-for-github/donbest.png
