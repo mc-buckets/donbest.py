@@ -328,7 +328,7 @@ TODO
 .. |header image| image:: https://s3.amazonaws.com/random-images-for-github/donbest.png
 .. |MIT license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
-.. |build badge|  image:: https://travis-ci.com/mamcmanus/donbest.svg?token=43sVQ9sXnXzhgBns7vWu&branch=master
-   :target: https://travis-ci.com/mamcmanus/donbest
+.. |build badge| image:: https://travis-ci.org/mamcmanus/donbest.py.svg?branch=master
+    :target: https://travis-ci.org/mamcmanus/donbest.py
 .. |pypi badge|  image:: https://img.shields.io/pypi/v/donbest.svg 
    :target: https://pypi.org/project/donbest/

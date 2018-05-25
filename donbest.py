@@ -558,13 +558,14 @@ class Score(BaseDonbestResponse):
         """
         s = cls(node=node, donbest=donbest)
         period_summary = s.node.find(".//period_summary")
-        periods = period_summary.findall(".//period")
-        if periods is not None:
-            p_list = []
-            for period in periods:
-                p = Period.from_period_summary(period, donbest=donbest)
-                p_list.append(p)
-        s.period_summary = p_list
+        if period_summary is not None:
+            periods = period_summary.findall(".//period")
+            if periods is not None:
+                p_list = []
+                for period in periods:
+                    p = Period.from_period_summary(period, donbest=donbest)
+                    p_list.append(p)
+            s.period_summary = p_list
         return s
 
 class Donbest(object):
