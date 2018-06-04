@@ -83,7 +83,10 @@ class BaseDonbestResponse(object):
                     except ValueError as e:
                         pass
             elif key in BaseDonbestResponse.INT_FIELDS:
-                v = int(value)
+                if value in ["WIN", "TIE", "LOSS"]:
+                    v = value
+                else:
+                    v = int(value)
             elif key in BaseDonbestResponse.DECIMAL_FIELDS:
                 v = Decimal(value)
             elif key in BaseDonbestResponse.BOOLEAN_FIELDS:
