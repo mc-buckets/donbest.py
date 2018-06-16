@@ -140,8 +140,6 @@ def score_keys():
         'league_id': str,
         'away_rot': int,
         'home_rot': int,
-        'away_score': int,
-        'home_score': int,
         'description': str,
         'time': datetime,
         'period': str,
